@@ -1,1 +1,220 @@
-CV
+#هنا بستدعى كل المكتبات  
+import speech_recognition as sr
+from rapidfuzz import process
+import pyttsx3
+engin=pyttsx3.init()
+
+#هنا هكتب كل المعلومات عن ال cv        
+lista1=["Personal Information","Professional Summary","Education", 
+      "Relevant Coursework","Graduation Project","Technical Skills","Laboratory & Technical Skills"
+      ,"Training & Certifications","Projects","Languages","Interests","stop"]
+lista2=["name","Degree","University","Major","GPA","Rank"]
+lista3=["General Year","Year 2","Year 3","Year 4"]
+info=["Personal Information","Professional Summary","Education", 
+      "Relevant Coursework","Graduation Project","Technical Skills","Laboratory & Technical Skills"
+      ,"Training & Certifications","Projects","Languages","Interests"]
+p_inf0={"name":" Hussain Mohareb Ahmed Mahmoud",
+        "Degree":" Bachelor of Science in Physics",
+        "University":"Cairo University, Faculty of Science",
+        "Major":" Physics (Single Major)",
+        "GPA":"3.071 (Very Good)",
+        "Rank":" 2nd in Physics Department"}
+prof_ssummary="""Highly motivated Physics graduate with strong analytical, laboratory, and computational skills.
+Experienced in digital and analog circuits, nuclear physics experiments, material 
+characterization, and scientific data analysis.
+Skilled in Python, C++, SQL (via Python), NI Multisim, and simulation tools.
+Completed practical training at leading national research institutes.
+Passionate about research, electronics, and applied physics."""
+education={"General Year":" Calculus, Analytical Geometry, General Physics, General Chemistry, Geophysics, Astronomy, Space & Meteorology, English, Computer Skills.",
+           "Year 2":"Electromagnetism, Classical Mechanics, Mathematical Physics, Thermodynamics, Modern Physics, Algorithms, C++, Waves, Optics.",
+           "Year 3":" Analog Circuits, Quantum Mechanics, Statistical Thermodynamics, Fluid Dynamics, Lasers, Energy Physics, Solid State Physics.",
+           "Year 4":" Nuclear Lab, Solid State Lab, Digital Lab, Low Temperature Physics, Microwave Physics, Group Theory, Condensed Matter Physics, High Energy Physics, Thin Films."}
+gra_proj="Effect of Annealing Process on Swelling Behavior of Silicon Rubber / Silica Ash Composite in Toluene."
+tech_skil=["Python (includes SQL using Python)",
+           "C++","MATLAB (in progress)","Arduino (in progress)",
+           "NI Multisim (Digital & Analog Design)","Mathematica, Origin",
+           "Microsoft Excel, Word, PowerPoint","Electronic Workbench (EWB)"]
+lap_and_tech_skil=["Analog And Digital Circuits","Analog & Digital Circuits",
+                   "Vacuum Systems & Thin Films","Microwave Systems",
+                   "Nuclear Measurements and Radiation Safety","Solid State Characterization",
+                   "Scientific Data Analysis & Modeling"]
+tra_and_cert="""National Research Centre (NRC), Dokki -Practical Physics Training
+Egyptian Atomic Energy Authority - Nuclear & Radiation Training
+Nuclear Materials Authority - Applied Physics Training"""
+proj="""Digital Clock & Timer (NI Multisim): Designed a full digital clock with programmable 
+outputs.
+Graduation research project on polymer composites and swelling behavior modeling"""
+lang=["Arabic(Native)","English(Good command)"]
+inter="Electronics, Arduino, Scientific Research, Nuclear Physics, Solid State Physics, Programming & Simulations"
+
+# هنا هكتب الدوال االى هستخدمها
+def speak(x) :
+    engin.setProperty('rate',150)
+    engin.say(x)
+    engin.runAndWait()
+def sound_recognition() :
+    rec=sr.Recognizer()
+    with sr.Microphone() as mic :
+        rec.adjust_for_ambient_noise(mic,duration=3)
+        try:
+             y=rec.listen(mic)
+             txt=rec.recognize_google(y)
+             return txt
+        except sr.UnknownValueError :
+            print("you dont speak sir pleas speak")
+            speak("you dont speak sir pleas speak")
+        except Exception as e:
+            print(f"there are erro happen :{e}")    
+def match_command1(user_text):
+    result = process.extractOne(user_text, lista1, score_cutoff=15)
+    if result:
+        return result[0]   # اسم الخيار الأقرب
+    return user_text
+def match_command2(user_text):
+    result = process.extractOne(user_text, lista2, score_cutoff=15)
+    if result:
+        return result[0]   # اسم الخيار الأقرب
+    return user_text
+def match_command3(user_text):
+    result = process.extractOne(user_text, lista3, score_cutoff=15)
+    if result:
+        return result[0]   # اسم الخيار الأقرب
+    return user_text
+
+def print_and_speak(x):
+     print(x.title())
+     speak(x)
+     return
+
+# هنا هكتب الدالة الى هتعرض محنوى الCv وهتتقاعل مع المستخدم
+def user_interface_menu():
+     print_and_speak("Welcome sir, this is your AI program. I am excited to show you the curriculum vitae of Hussain Mohareb. Choose what you want to know from the options below.")
+     for i in info:
+         print_and_speak(i)        
+     print_and_speak("if you dont want any inforamation please ask me to stop")
+     print_and_speak("look ! also if you want to continue with curriculum vitae of hussain mohareb pleas chose again")
+     return
+
+# هنا personal information menu function
+def personal_information_menu():
+     print_and_speak("chose what you want to know about the personal information of hussain from blow option ")
+     print_and_speak("look ! also if you want to continue with personal information pleas chose again")
+     print_and_speak("also ! if you want to move to the main page ask to me stop")
+     for i in p_inf0 :
+             print_and_speak(i)
+     print_and_speak("are you ready to chose sir")  
+     while True :
+          y=match_command2(sound_recognition())
+          if y== "stop" :
+             print_and_speak("Nice to meet you sir i am realy fin to help you!!!")
+             return
+          else:
+              try:
+                     print_and_speak(p_inf0[y])
+              except KeyError :
+                     print_and_speak(f"sir! this option {y} not found try to chose again ")
+              except Exception as e :
+                     print(f"there are error: {e}")
+     return                
+
+# هنا courswork menu function 
+def coursework_menu():
+      print_and_speak("chose what you want to know about the Relevant Coursework of hussain from blow option ")
+      print_and_speak("look ! also if you want to continue with Relevant Coursework pleas chose again")
+      print_and_speak("also ! if you want to move to the main page ask to me stop")
+      for i in education :
+          print_and_speak(i)
+      print_and_speak("are you ready to chose sir")
+      while True :
+         g=match_command3(sound_recognition())
+         if g=="stop":
+              print_and_speak("Nice to meet you sir i am realy fin to help you!!!")
+              return
+         else :
+             try:
+                     print_and_speak(education[g])
+             except KeyError :
+                        print_and_speak(f"sir! this option {g}not found try to chose again ")
+             except Exception as e :
+                     print(f"there are error: {e}") 
+                
+  
+#هنا   Professional Summary menu function 
+def Professional_Summary_menu():
+     print_and_speak("good i will show you Professional Summary")
+     print_and_speak(prof_ssummary)
+     return 
+
+#هنا graduation prject menu function
+def graduation_project_menu():
+     print_and_speak(f"the graduation project is : {gra_proj}") 
+     return
+
+#هنا Technical Skills menu function
+def technical_skil_menu():
+      print_and_speak(f"hssain s' skills are : ")
+      for i in tech_skil :
+             print_and_speak(i)
+      return    
+  
+#هنا Laboratory & Technical Skills menu function 
+def Laboratory_and_Technical_Skills_menu():
+     print_and_speak(f"Laboratory & Technical Skills are : ") 
+     for i in lap_and_tech_skil :
+              print_and_speak(i)
+     return     
+    
+#هناTraining & Certification menu function
+def Training_Certifications_menu():
+     print_and_speak(f"the Training & Certifications that hussain have {tra_and_cert}")
+     return
+
+#هنا Projects menu function
+def Projects_menu():
+     print_and_speak(f"the projects done by hussain mohareb is : {proj}")
+     return
+
+#هنا Languages menu function 
+def Languages_menu():
+     print_and_speak("the language hussain have is :") 
+     for i in lang :
+          print_and_speak(i)
+     return 
+
+#هنا Interests menu function 
+def Interests_menu():
+      print_and_speak(f"hussain interest by : {inter}")
+      return 
+
+#هنا Cv Ai programme
+user_interface_menu()
+while True :
+     x=match_command1(sound_recognition())
+     if x=="stop":
+          print("Nice to meet you sir i am realy fin to help you!!!")
+          speak("Nice to meet you sir i am realy fin to help you!!!")
+          break
+        
+     elif x=="Personal Information" :
+          personal_information_menu()
+     elif x== "Professional Summary" :
+          Professional_Summary_menu()
+     elif x=="Relevant Coursework" : 
+          coursework_menu()
+     elif x== "Graduation Project" :
+          graduation_project_menu()
+     elif x== "Technical Skills" :
+          technical_skil_menu()
+     elif x== "Laboratory & Technical Skills":
+          Laboratory_and_Technical_Skills_menu()
+     elif x== "Training & Certifications":
+           Training_Certifications_menu() 
+     elif x== "Projects":
+            Projects_menu()
+     elif x== "Languages":
+          Languages_menu()
+     elif x== "Interests" :
+           Interests_menu()
+     else :
+          print(f"what you chose is {x} is  not found please !! chose again ")  
+          speak(f"what you chose is {x} is  not found please !! chose again ")
